@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CT-Farma (HP)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <nav>
+<div class="navbar">
+    <img style="border: 4px solid #8cff00;" src="static/logo2.png" alt="Logo">
+    <a  href="#" onclick="refreshPage()" style="color: #8cff00;"><h1>-FARMA</h1></a>
+</div>
+    <div class="nav-links">
+      <div class="head-links" id="head-id">
+      <button class="heading-btn" data-target="ai-assist">AI Assist</button>
+      <button class="heading-btn" data-target="prices-section">Crop Prices</button>
+      <button class="heading-btn" data-target="schemes-section">Govt. Schemes</button>
+      <button class="heading-btn" data-target="news-section">News</button>
+      <button class="heading-btn" style="margin-right: 30px;" data-target="tools-section">Tools</button>
+      </div>
+      <div class="right"> 
+        <div id="weatherContainer">
+         <input type="textlocation" class="waitlist-btn" id="locationInput" placeholder="Enter location..." />
+         <div id="weatherDisplay" class="weather-container"></div>
+        </div>
+      </div>
+<!-- Updated Join Button in Navigation -->
+<button id="join" class="waitlist-btn">Join</button><h1 id="hey" style="display: none; font-size: 20px;text-decoration: underline; text-decoration-style: single; text-underline-offset: 12px; color: white"></h1>
+
+
+
+<div id="rolePopup" class="popup-container" style="display: none;">
+  <div class="popup">
+      <span class="close-btn" onclick="closePopup('rolePopup')">&times;</span>
+      <h2>Select Your Role</h2>
+      <div class="role-options">
+          <div class="role" onclick="openPopup('userPopup')">
+              <img src="user-icon.png" alt="User">
+              <p>User</p>
+          </div>
+          <div class="role" onclick="openPopup('adminPopup')">
+              <img src="admin-icon.png" alt="Admin">
+              <p>Admin</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- User Popup -->
+<div id="userPopup" class="popup-container" style="display: none;">
+  <div class="popup">
+      <span class="close-btn" onclick="closePopup('userPopup')">&times;</span>
+      <h2>User Login</h2>
+      <input type="text" placeholder="Enter Username">
+      <input type="password" placeholder="Enter Password">
+      <button>Login</button>
+  </div>
+</div>
+
+<!-- Admin Popup -->
+<div id="adminPopup" class="popup-container" style="display: none;">
+  <div class="popup">
+      <span class="close-btn" onclick="closePopup('adminPopup')">&times;</span>
+      <h2>Admin Login</h2>
+      <input type="text" placeholder="Enter Admin ID">
+      <input type="password" placeholder="Enter Password">
+      <button>Login</button>
+  </div>
+</div>
+
+
+<!-- Login Modal -->
+<div id="loginModal" class="login-modal">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-3 col-md-2"></div>
+          <div class="col-lg-6 col-md-8 login-box">
+              <div class="col-lg-12 login-key"><img style="border: 4px solid #8cff00;" id="logo-login" src="static/logo2.png"/></div>
+              <br>
+              <div class="col-lg-12 login-form">
+                  <form id="loginForm">
+                      <div class="form-group">
+                          <label class="form-control-label">FIRST NAME</label>
+                          <input id="user-name"  type="text" class="form-control" required>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-control-label">LAST NAME</label>
+                          <input type="text" class="form-control" required>
+                          <label class="form-control-label">AGE</label>
+                          <input type="number" min="18" max="110" class="form-control" required>
+                      </div>
+                      <div class="col-lg-12 loginbttm">
+                          <div class="col-lg-6 login-btm login-text"></div>
+                          <div class="col-lg-6 login-btm login-button">
+                              <button type="submit" id="submitForm" class="btn btn-outline-primary">SUBMIT</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+          </div>
+          <div class="col-lg-3 col-md-2"></div>
+      </div>
+  </div>
+</div>
+
+<!-- Thank You Card -->
+<div id="thankYouCard" class="thank-you-card">
+  <h1 style="color: #8cff00;">THANK YOU </h1>
+  <br>
+  <h2>Your registration is confirmed</h2>
+  <br>
+  <p>YOU’VE SUCCESSFULLY COMPLETED REGISTRATION<br><br> WELCOME TO OUR CT-FARMS.</p>
+</div>
+
+  </nav>
+  <div id="google-div"><div id="google_translate_element"></div></div>
+
+  <header>
+    <section id="ai-assist">
+    <h1 id="home" >From Soil to Success<br><span style="color: #8cff00;">Himachal Pardesh</span></h1>
+    </section>
+
+    <div class="input-container">
+      <div id="imagePreview" class="image-preview"></div>
+  
+      <input id="wait" placeholder="Ask a farming question or upload an image..." class="search">
+      <button class="plus-button" onclick="askQuestion()">➤</button>
+      
+  
+      <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+      <button class="upload-button" onclick="document.getElementById('imageUpload').click();"><div class="image-upload-container"><img src="static/gallery.png" alt="Upload"></div></button>
+      
+    </div>
+    
+    <div id="speechButtonsContainer" style=" display: none; position: relative;">
+      <!-- Left Button -->
+      <button id="englishBtn" class="waitlist-btn" style=" position: absolute; left: 170px; top: 50%; transform: translateY(-100%);" onclick="toggleSpeech('en-US', 'englishBtn')">🔊 English</button>
+      
+      <!-- Right Button -->
+      <button id="hindiBtn" class="waitlist-btn" style="position: absolute; right: 170px; top: 50%; transform: translateY(-100%);" onclick="toggleSpeech('hi-IN', 'hindiBtn')">🔊 Hindi</button>
+  </div>
+    
+    <div id="answerBox" class="api-container">
+        <h2 class="api-heading" >Expert Farming Advice</h2>
+        <p>Ask a question or upload an image for analysis.</p>
+    </div>
+
+  
+  
+  </header>
+  <section id="prices-section">
+  <hr class="bottom-line">
+  <div class="api-container" id="crop-prices-container">
+    <h1 style="color: #8cff00;">Himachal Pradesh Commodity Price (Per Quintal)</h1>
+
+    <form id="priceForm" class="mb-5">
+        <label>Commodity</label><br>
+        <input style="border: 1px solid #8cff00;" class="input-comm" type="text" list="commodities" id="priceinput" name="commodity" placeholder="Enter commodity" required><br>
+        <datalist id="commodities" size="7" style="max-height: 50px;">
+          <option value="Amla(Nelli Kai)"></option>
+          <option value="Apple"></option>
+          <option value="Banana"></option>
+          <option value="Beetroot"></option>
+          <option value="Ber(Zizyphus/Borehannu)"></option>
+          <option value="Bhindi(Ladies Finger)"></option>
+          <option value="Bitter gourd"></option>
+          <option value="Bottle gourd"></option>
+          <option value="Brinjal"></option>
+          <option value="Cabbage"></option>
+          <option value="Capsicum"></option>
+          <option value="Carrot"></option>
+          <option value="Cauliflower"></option>
+          <option value="Chikoo(Sapota)"></option>
+          <option value="Coconut"></option>
+          <option value="Colocasia"></option>
+          <option value="Coriander(Leaves)"></option>
+          <option value="Cucumber(Kheera)"></option>
+          <option value="Elephant Yam (Suran)"></option>
+          <option value="French Beans (Fasbean)"></option>
+          <option value="Galgal(Lemon)"></option>
+          <option value="Garlic"></option>
+          <option value="Ginger(Dry)"></option>
+          <option value="Ginger(Green)"></option>
+          <option value="Grapes"></option>
+          <option value="Green Chilli"></option>
+          <option value="Guava"></option>
+          <option value="Indian Beans (Seam)"></option>
+          <option value="Indian Colza(Sarson)"></option>
+          <option value="Jack Fruit"></option>
+          <option value="Kinnow"></option>
+          <option value="Leafy Vegetable"></option>
+          <option value="Lemon"></option>
+          <option value="Mango"></option>
+          <option value="Mushrooms"></option>
+          <option value="Methi(Leaves)"></option>
+          <option value="Mousambi(Sweet Lime)"></option>
+          <option value="Onion"></option>
+          <option value="Onion Green"></option>
+          <option value="Orange"></option>
+          <option value="Papaya"></option>
+          <option value="Pear(Marasebu)"></option>
+          <option value="Peas Wet"></option>
+          <option value="Peas cod"></option>
+          <option value="Persimmon(Japani Fal)"></option>
+          <option value="Pineapple"></option>
+          <option value="Plum"></option>
+          <option value="Pomegranate"></option>
+          <option value="Potato"></option>
+          <option value="Pumpkin"></option>
+          <option value="Radish"></option>
+          <option value="Ridgegourd(Tori)"></option>
+          <option value="Season Leaves"></option>
+          <option value="Spinach"></option>
+          <option value="Sponge gourd"></option>
+          <option value="Squash(Chappal Kadoo)"></option>
+          <option value="Tinda"></option>
+          <option value="Tomato"></option>
+          <option value="Turnip"></option>
+          <option value="Water Melon"></option>
+      </datalist>
+        
+        <label >Date</label><br>
+        <input style="border: 1px solid #8cff00;" class="input-comm" type="date" id="priceinput2" name="date" required><br>
+
+        <button onclick="showback()" type="submit" id="join" class="btn btn-primary mt-3" style="margin-top: 15px;">Result</button>
+      </form>
+
+    <div id="priceResults" class="result-container" style="display: none;"></div>
+    <button class="price-back" onclick="pricebutton()" id="backButton" style="display: none; position: absolute; top: 10px; left: 10px; background: none; border: none; font-size: 20px; cursor: pointer; color: white; padding: 5px;">⬅ </button>  
+
+</div>
+  </section>
+
+<section id="schemes-section">
+<hr class="bottom-line">
+<!-- Government Schemes Section -->
+<div id="apiContainer2">
+<div id="news-container" style="border: 1px solid #8cff00;">
+<h1 style="color: #8cff00;">Himachal Pradesh Government Schemes</h1>
+<div id="scheme-section">
+    <div id="loadingSpinner" style="display: none;">
+        <p>Loading schemes... ⏳</p>
+    </div>
+    <div id="schemesContainer"></div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="news-section">
+  <hr class="bottom-line">
+  <div id="apiContainer2">
+    <div id="news-container" style="border: 1px solid #8cff00;">
+      <h2 id="news" style="color: #8cff00;">Latest Agriculture Updates</h2>
+
+      <div id="news-list"><!-- News items will be inserted here dynamically --></div>
+      <button id="load-more" style="background-color: #8cff00;" onclick="loadMoreNews()">Show More</button>
+    </div>
+  </div>
+</section>
+<section id="tools-section">
+  <hr class="bottom-line">
+  <div class="api-container" id="tools-section">
+    <h2 id="tools" style="color: #8cff00;"> Agriculture Tools</h2>
+
+    <div id="tool-buttons">
+        <button class="tool-btn" id="join" onclick="showTool('seedRate')">Seed Rate Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('fertilizer')">Fertilizer Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('soilPh')">Soil Status Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('irrigation')">Water Requirement Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('cropYield')">Crop Yield Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('dripIrrigation')">Drip Irrigation Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('rainHarvest')">Rain Harvest Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('frostPrediction')">Frost Prediction Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('heatStress')">Heat Stress Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('harvestTiming')">Harvest Time Estimator</button>
+        <button class="tool-btn" id="join" onclick="showTool('loanEMI')">LoanEMI Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('tractorFuelEfficiency')">Fuel Efficiency Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('feedRequirement')">Feed Requirement Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('gdd')">Growing Degree Days Calculator</button>
+        <button class="tool-btn" id="join" onclick="showTool('farmEquipmentCost')">Farm Equipment Cost Calculator</button>
+    </div>
+    <button id="backButton" class="bb1" onclick="goBack()" style="display: block; position: absolute; top: 10px; left: 10px; background: none; border: none; font-size: 20px; cursor: pointer; color: white; padding: 5px;">⬅</button>    <div id="tool-content"></div>
+  </div>
+  <hr class="bottom-line">
+</section>
+
+  
+
+
+
+
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
