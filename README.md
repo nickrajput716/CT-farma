@@ -41,3 +41,4 @@ CT-FARMA is an AI-powered web application designed to assist farmers by providin
    ```bash
    git clone https://github.com/yourusername/ct-farma.git
    cd ct-farma
+   python app.py
